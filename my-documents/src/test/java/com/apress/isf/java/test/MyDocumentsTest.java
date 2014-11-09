@@ -3,10 +3,11 @@ package com.apress.isf.java.test;
 import com.apress.isf.java.model.Document;
 import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
+import com.apress.isf.spring.config.MyDocumentsContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 
@@ -20,11 +21,10 @@ public class MyDocumentsTest {
     @Before
     public void setUp() throws Exception {
         ApplicationContext context
-                = new ClassPathXmlApplicationContext(
-                    "META-INF/spring/mydocuments-annotations-context.xml");
+                = new AnnotationConfigApplicationContext(MyDocumentsContext.class);
 
         engine = context.getBean(SearchEngine.class);
-        documentType = context.getBean("webType", Type.class);
+        documentType = context.getBean(Type.class);
     }
 
     @Test
