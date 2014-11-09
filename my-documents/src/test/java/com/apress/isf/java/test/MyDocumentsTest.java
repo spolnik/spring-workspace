@@ -24,7 +24,7 @@ public class MyDocumentsTest {
                     "META-INF/spring/mydocuments-context.xml");
 
         engine = context.getBean(SearchEngine.class);
-        documentType = context.getBean(Type.class);
+        documentType = context.getBean("webType", Type.class);
     }
 
     @Test
