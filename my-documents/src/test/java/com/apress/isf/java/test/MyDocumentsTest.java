@@ -21,7 +21,7 @@ public class MyDocumentsTest {
     public void setUp() throws Exception {
         ApplicationContext context
                 = new ClassPathXmlApplicationContext(
-                    "META-INF/spring/mydocuments-context.xml");
+                    "META-INF/spring/mydocuments-annotations-context.xml");
 
         engine = context.getBean(SearchEngine.class);
         documentType = context.getBean("webType", Type.class);
