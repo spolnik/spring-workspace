@@ -1,0 +1,16 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+mainClassName = System.getProperty("mainClass")
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'org.springframework:spring-context:4.0.5.RELEASE'
+
+    testCompile 'junit:junit:4.11'
+}
