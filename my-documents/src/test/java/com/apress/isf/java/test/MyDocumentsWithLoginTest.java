@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:META-INF/spring/mydocuments-context.xml")
+@ContextConfiguration("classpath:META-INF/spring/mydocuments-login-context.xml")
 public class MyDocumentsWithLoginTest {
 
     private static final Logger log =

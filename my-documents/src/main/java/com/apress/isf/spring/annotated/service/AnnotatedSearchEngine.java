@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class AnnotatedSearchEngine implements SearchEngine {
 
     @Override
     public List<Document> listAll() {
-        return Arrays.asList(documentDAO.getAll());
+        return documentDAO.getAll();
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.data.DocumentDAO;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,7 @@ public class SearchEngineService implements SearchEngine {
 
     @Override
     public List<Document> listAll() {
-        return Arrays.asList(documentDAO.getAll());
+        return documentDAO.getAll();
     }
 
     @Override

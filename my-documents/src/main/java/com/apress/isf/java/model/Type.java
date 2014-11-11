@@ -1,9 +1,26 @@
 package com.apress.isf.java.model;
 
 public class Type {
+    private String typeId;
     private String name;
     private String desc;
     private String extension;
+
+    public Type() {
+    }
+
+    public Type(String name, String extension) {
+        this.name = name;
+        this.extension = extension;
+    }
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
 
     public String getName() {
         return name;
@@ -43,5 +60,15 @@ public class Type {
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Type{" +
+                "typeId='" + typeId + '\'' +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", extension='" + extension + '\'' +
+                '}';
     }
 }

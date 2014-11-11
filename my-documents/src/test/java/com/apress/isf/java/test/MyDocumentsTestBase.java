@@ -11,8 +11,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class MyDocumentsTestBase {
+
     @Autowired
     private SearchEngine engineProxy;
+
     @Autowired
     private Type webType;
 

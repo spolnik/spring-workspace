@@ -2,6 +2,8 @@ package com.apress.isf.spring.data;
 
 import com.apress.isf.java.model.Document;
 
+import java.util.List;
+
 public interface DocumentDAO {
-    Document[] getAll();
+    List<Document> getAll();
 }

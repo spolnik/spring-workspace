@@ -1,33 +1,61 @@
 package com.apress.isf.spring.data;
 
 import com.apress.isf.java.model.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentRepository implements DocumentDAO {
 
-    private static final Logger log
-            = LoggerFactory.getLogger(DocumentRepository.class);
+    private DataSource dataSource;
 
-    private List<Document> documents = null;
-
-        public void setDocuments(List<Document> documents) {
-        this.documents = documents;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
-    public Document[] getAll() {
-        if (log.isDebugEnabled())
-            log.debug("Start <getAll> Params: ");
+    public List<Document> getAll() {
+        List<Document> result = new ArrayList<>();
+        Connection connection = null;
 
-        final Document[] result = documents.stream().toArray(Document[]::new);
+        try {
+            connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM documents");
 
-        if (log.isDebugEnabled())
-            log.debug("End <getAll> Result:" + Arrays.toString(result));
+            while (resultSet.next()) {
+                result.add(getDocument(resultSet));
+            }
+        } catch (SQLException sqlEx) {
+            throw new RuntimeException(sqlEx);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    // nothing more to do
+                }
+            }
+        }
 
         return result;
+    }
+
+    private Document getDocument(ResultSet resultSet) throws SQLException {
+        Document document = new Document();
+
+        document.setDocumentId(resultSet.getString("documentId"));
+        document.setName(resultSet.getString("name"));
+        document.setLocation(resultSet.getString("location"));
+        document.setCreated(resultSet.getDate("created"));
+        document.setModified(resultSet.getDate("modified"));
+        document.setDescription("doc_desc");
+
+        return document;
     }
 }
