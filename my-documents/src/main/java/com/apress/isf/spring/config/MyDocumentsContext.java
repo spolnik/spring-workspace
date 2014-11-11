@@ -37,7 +37,10 @@ public class MyDocumentsContext {
     }
 
     private DocumentDAO documentDAO(){
-        return new DocumentRepository();
+
+        final DocumentRepository repository = new DocumentRepository();
+        repository.initialize();
+        return repository;
     }
 
 

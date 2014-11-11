@@ -23,8 +23,9 @@ public abstract class MyDocumentsTestBase {
         final List<Document> documents = engineProxy.findByType(webType);
 
         assertThat(documents).isNotNull().hasSize(1);
-        assertThat(documents.get(0).getType())
-                .isEqualToComparingFieldByField(webType);
+        assertThat(documents.get(0).getType().getName()).isEqualTo(webType.getName());
+        assertThat(documents.get(0).getType().getDesc()).isEqualTo(webType.getDesc());
+        assertThat(documents.get(0).getType().getExtension()).isEqualTo(webType.getExtension());
     }
 
     @Test
