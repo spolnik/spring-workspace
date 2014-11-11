@@ -4,7 +4,10 @@ import com.apress.isf.java.model.Document;
 import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.config.MyDocumentsContext;
+import com.apress.isf.spring.views.ResourceLoaderMenu;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -14,6 +17,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MyDocumentsTest {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(MyDocumentsTest.class);
 
     @Test
     public void testFindByType_annotiations() throws Exception {
@@ -59,5 +65,17 @@ public class MyDocumentsTest {
 
         final List<Document> documents = engine.listAll();
         assertThat(documents).isNotNull().hasSize(4);
+    }
+
+    @Test
+    public void testMenu() throws Exception {
+        log.debug("About to read the Resource file using ResourceLoader: menu.txt");
+
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("META-INF/spring/mydocuments-context.xml");
+
+        final ResourceLoaderMenu menu = context.getBean(ResourceLoaderMenu.class);
+        assertThat(menu).isNotNull();
+        menu.printMenu("classpath:META-INF/data/menu.txt");
     }
 }
