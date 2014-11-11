@@ -4,10 +4,10 @@ import com.apress.isf.java.model.Document;
 import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.config.MyDocumentsContext;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
 
@@ -15,20 +15,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MyDocumentsTest {
 
-    private SearchEngine engine;
-    private Type documentType;
-
-    @Before
-    public void setUp() throws Exception {
+    @Test
+    public void testFindByType_annotiations() throws Exception {
         ApplicationContext context
                 = new AnnotationConfigApplicationContext(MyDocumentsContext.class);
-
-        engine = context.getBean(SearchEngine.class);
-        documentType = context.getBean(Type.class);
+        testFindByType(context);
     }
 
     @Test
-    public void testFindByType() throws Exception {
+    public void testFindByType_xml() throws Exception {
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("META-INF/spring/mydocuments-context.xml");
+        testFindByType(context);
+    }
+
+    private void testFindByType(ApplicationContext context) throws Exception {
+        SearchEngine engine = context.getBean(SearchEngine.class);
+        Type documentType = context.getBean("webType", Type.class);
+
         final List<Document> documents = engine.findByType(documentType);
 
         assertThat(documents).isNotNull().hasSize(1);
@@ -37,7 +41,22 @@ public class MyDocumentsTest {
     }
 
     @Test
-    public void testListAll() throws Exception {
+    public void testListAll_annotations() throws Exception {
+        ApplicationContext context
+                = new AnnotationConfigApplicationContext(MyDocumentsContext.class);
+        testListAll(context);
+    }
+
+    @Test
+    public void testListAll_xml() throws Exception {
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("META-INF/spring/mydocuments-context.xml");
+        testListAll(context);
+    }
+
+    private void testListAll(ApplicationContext context) throws Exception {
+        SearchEngine engine = context.getBean(SearchEngine.class);
+
         final List<Document> documents = engine.listAll();
         assertThat(documents).isNotNull().hasSize(4);
     }

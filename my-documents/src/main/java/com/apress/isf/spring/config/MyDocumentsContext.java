@@ -1,8 +1,10 @@
 package com.apress.isf.spring.config;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,9 +14,12 @@ import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.data.DocumentDAO;
 import com.apress.isf.spring.data.DocumentRepository;
 import com.apress.isf.java.service.SearchEngineService;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
 public class MyDocumentsContext {
+    private static final Logger log =
+            LoggerFactory.getLogger(MyDocumentsContext.class);
 
     private Map<String,Document> documents = new HashMap<>();
     private Map<String,Type> types = new HashMap<>();
@@ -25,18 +30,22 @@ public class MyDocumentsContext {
     }
 
     @Bean
+    @Scope("prototype")
     public SearchEngine engine(){
         SearchEngineService engine = new SearchEngineService();
         engine.setDocumentDAO(documentDAO());
+
+        if(log.isDebugEnabled())
+            log.debug("SearchEngine created: " + engine);
+
         return engine;
     }
 
-    public MyDocumentsContext(){
+    public MyDocumentsContext() {
         Type type = new Type();
         type.setName("PDF");
         type.setDesc("Portable Document Format");
         type.setExtension(".pdf");
-
 
         Document document = new Document();
         document.setName("Book Template");
@@ -82,10 +91,13 @@ public class MyDocumentsContext {
 
     private DocumentDAO documentDAO(){
         DocumentRepository documentDAO = new DocumentRepository();
-        documentDAO.setDoc1(getDocumentFromMap("doc1"));
-        documentDAO.setDoc2(getDocumentFromMap("doc2"));
-        documentDAO.setDoc3(getDocumentFromMap("doc3"));
-        documentDAO.setDoc4(getDocumentFromMap("doc4"));
+
+        final List<Document> documents =
+                Arrays.asList("doc1", "doc2", "doc3", "doc4").stream()
+                    .map(this::getDocumentFromMap)
+                    .collect(Collectors.toList());
+
+        documentDAO.setDocuments(documents);
         return documentDAO;
     }
 

@@ -5,6 +5,7 @@ import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.data.DocumentDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("engine")
+@Scope("prototype")
 public class AnnotatedSearchEngine implements SearchEngine {
 
     @Autowired
