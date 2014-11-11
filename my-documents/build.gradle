@@ -14,14 +14,11 @@ dependencies {
     compile 'ch.qos.logback:logback-classic:1.1.2'
     compile 'org.codehaus.groovy:groovy-all:2.3.7'
     compile 'org.springframework:spring-context:4.1.1.RELEASE'
+    compile 'org.springframework:spring-jdbc:4.1.1.RELEASE'
+
+    runtime 'org.hsqldb:hsqldb:2.3.2'
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'org.springframework:spring-test:4.1.1.RELEASE'
-}
-
-test {
-    testLogging {
-        events 'started', 'passed'
-    }
 }
