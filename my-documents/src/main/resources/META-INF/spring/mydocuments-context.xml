@@ -7,7 +7,16 @@
 
     <context:component-scan base-package="com.apress.isf.spring.views" />
 
-    <bean id="engine" class="com.apress.isf.java.service.SearchEngineService">
+    <bean id="environmentProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:META-INF/data/env_dev.properties" />
+    </bean>
+
+    <bean id="login" class="com.apress.isf.spring.service.LoginService">
+        <property name="username" value="${user.email}" />
+        <property name="password" value="${user.password}" />
+    </bean>
+
+    <bean id="engine" class="com.apress.isf.spring.service.SearchEngineService">
         <property name="documentDAO" ref="documentDAO"/>
     </bean>
 

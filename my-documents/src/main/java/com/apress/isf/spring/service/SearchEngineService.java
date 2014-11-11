@@ -1,7 +1,8 @@
-package com.apress.isf.java.service;
+package com.apress.isf.spring.service;
 
 import com.apress.isf.java.model.Document;
 import com.apress.isf.java.model.Type;
+import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.data.DocumentDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

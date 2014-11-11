@@ -13,7 +13,7 @@ import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.data.DocumentDAO;
 import com.apress.isf.spring.data.DocumentRepository;
-import com.apress.isf.java.service.SearchEngineService;
+import com.apress.isf.spring.service.SearchEngineService;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
