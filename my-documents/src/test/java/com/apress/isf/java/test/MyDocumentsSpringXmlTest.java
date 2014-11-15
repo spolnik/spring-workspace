@@ -3,7 +3,9 @@ package com.apress.isf.java.test;
 import com.apress.isf.java.model.Document;
 import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
+import com.apress.isf.spring.amqp.RabbitMQProducer;
 import com.apress.isf.spring.jms.JMSProducer;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,11 +24,16 @@ public class MyDocumentsSpringXmlTest {
     private static final int MAX_ALL_DOCS = 5;
     private static final int MAX_WEB_DOCS = 2;
 
+    private static final String DOCUMENT_ID = "df569fa4-a513-4252-9810-818cade184ca";
+
     @Inject
     private SearchEngine engineProxy;
 
     @Inject
     private JMSProducer jmsProducer;
+
+    @Inject
+    private RabbitMQProducer rabbitmqProducer;
 
     @Inject
     private Type webType;
@@ -70,5 +77,20 @@ public class MyDocumentsSpringXmlTest {
 
         Type documentType = new Type("WEB",".url");
         assertThat(MAX_WEB_DOCS).isEqualTo(engineProxy.findByType(documentType).size());
+    }
+
+    @Test
+    @Ignore
+    public void testSpringRabbitMQ() throws Exception {
+
+        jmsProducer.send();
+        //Waiting a least 3 seconds so the message is consumed.
+        Thread.sleep(3000);
+
+        assertThat(rabbitmqProducer).isNotNull();
+
+        Document document = engineProxy.findById(DOCUMENT_ID);
+        assertThat(document).isNotNull();
+        rabbitmqProducer.send(document);
     }
 }

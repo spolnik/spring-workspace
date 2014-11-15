@@ -26,6 +26,11 @@ public class SearchEngineService implements SearchEngine {
     }
 
     @Override
+    public Document findById(String id) {
+        return documentDAO.findById(id);
+    }
+
+    @Override
     public List<Document> listAll() {
         return documentDAO.getAll();
     }

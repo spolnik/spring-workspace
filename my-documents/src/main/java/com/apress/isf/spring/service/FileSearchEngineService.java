@@ -18,6 +18,11 @@ public class FileSearchEngineService implements SearchEngine {
     }
 
     @Override
+    public Document findById(String id) {
+        throw new UnsupportedOperationException("QA Environment. Not yet implemented operation.");
+    }
+
+    @Override
     public List<Document> listAll() {
         throw new UnsupportedOperationException("QA Environment. Not yet implemented operation.");
     }
