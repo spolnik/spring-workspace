@@ -19,6 +19,12 @@ dependencies {
     compile 'org.springframework:spring-context:4.1.1.RELEASE'
     compile 'org.springframework:spring-jdbc:4.1.1.RELEASE'
     compile 'org.springframework:spring-webmvc:4.1.1.RELEASE'
+    compile 'org.springframework:spring-jms:4.1.1.RELEASE'
+    compile 'org.springframework.amqp:spring-rabbit:1.3.6.RELEASE'
+    compile 'javax.jms:jms-api:1.1-rev-1'
+    compile 'javax.inject:javax.inject:1'
+    compile 'com.thoughtworks.xstream:xstream:1.4.7'
+    compile 'org.apache.activemq:activemq-core:5.7.0'
 
     runtime 'javax.servlet.jsp.jstl:jstl-api:1.2'
     runtime 'cglib:cglib:3.1'

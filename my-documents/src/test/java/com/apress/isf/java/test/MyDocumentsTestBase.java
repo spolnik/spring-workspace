@@ -3,19 +3,30 @@ package com.apress.isf.java.test;
 import com.apress.isf.java.model.Document;
 import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
+import com.apress.isf.spring.jms.JMSProducer;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.runners.MethodSorters;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class MyDocumentsTestBase {
 
-    @Autowired
+    //Based on the META-INF/data/jms.txt - only one record
+    private static final int MAX_ALL_DOCS = 5;
+    private static final int MAX_WEB_DOCS = 2;
+
+    @Inject
     private SearchEngine engineProxy;
 
-    @Autowired
+    @Inject
+    private JMSProducer jmsProducer;
+
+    @Inject
     private Type webType;
 
     @Test
@@ -41,5 +52,23 @@ public abstract class MyDocumentsTestBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testSpringJMS_1(){
+        jmsProducer.send();
+    }
+
+    @Test
+    public void testSpringJMS_2() throws InterruptedException {
+        assertThat(engineProxy).isNotNull();
+
+        //Waiting a least 5 seconds so the message is consumed.
+        Thread.sleep(5000);
+        //After the JMS message and insert, must be 5 Documents
+        assertThat(MAX_ALL_DOCS).isEqualTo(engineProxy.listAll().size());
+
+        Type documentType = new Type("WEB",".url");
+        assertThat(MAX_WEB_DOCS).isEqualTo(engineProxy.findByType(documentType).size());
     }
 }
