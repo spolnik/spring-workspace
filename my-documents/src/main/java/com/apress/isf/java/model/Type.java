@@ -1,5 +1,8 @@
 package com.apress.isf.java.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Type {
     private String typeId;
     private String name;

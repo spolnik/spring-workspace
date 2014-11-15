@@ -1,11 +1,11 @@
 package com.apress.isf.spring.jms;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -16,7 +16,7 @@ public class JMSProducer {
     @Value("classpath:META-INF/data/jms.txt")
     private Resource jmsTxt;
 
-    @Inject
+    @Autowired
     private JmsTemplate jmsTemplate;
 
     public void send() {

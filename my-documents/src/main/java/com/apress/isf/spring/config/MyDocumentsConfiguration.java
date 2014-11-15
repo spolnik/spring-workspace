@@ -5,11 +5,11 @@ import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.data.DocumentDAO;
 import com.apress.isf.spring.data.DocumentRepository;
 import com.apress.isf.spring.jms.JMSConsumer;
+import com.apress.isf.spring.jms.JMSProducer;
 import com.apress.isf.spring.service.SearchEngineService;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -21,7 +21,6 @@ import javax.jms.MessageListener;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("com.apress.isf.spring")
 public class MyDocumentsConfiguration {
 
     @Bean
@@ -101,19 +100,24 @@ public class MyDocumentsConfiguration {
     }
 
     @Bean
-    public DefaultMessageListenerContainer jmsListenerContainer(MessageListener messageListener) {
+    public DefaultMessageListenerContainer jmsListenerContainer(MessageListener jmsConsumer) {
         final DefaultMessageListenerContainer messageListenerContainer =
                 new DefaultMessageListenerContainer();
 
         messageListenerContainer.setConnectionFactory(connectionFactory());
         messageListenerContainer.setDestination(new ActiveMQQueue("mydocumentsQueue"));
-        messageListenerContainer.setMessageListener(messageListener);
+        messageListenerContainer.setMessageListener(jmsConsumer);
 
         return messageListenerContainer;
     }
 
     @Bean
-    public MessageListener messageListener() {
+    public MessageListener jmsConsumer() {
         return new JMSConsumer();
+    }
+
+    @Bean
+    public JMSProducer jmsProducer() {
+        return new JMSProducer();
     }
 }

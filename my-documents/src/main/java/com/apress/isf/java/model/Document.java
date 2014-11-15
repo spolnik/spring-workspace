@@ -1,7 +1,9 @@
 package com.apress.isf.java.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
+@XmlRootElement
 public class Document {
     private String documentId;
     private String name;

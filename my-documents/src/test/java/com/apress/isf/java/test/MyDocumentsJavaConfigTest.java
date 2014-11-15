@@ -7,10 +7,10 @@ import com.apress.isf.spring.config.MyDocumentsConfiguration;
 import com.apress.isf.spring.jms.JMSProducer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.inject.Inject;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,13 +23,13 @@ public class MyDocumentsJavaConfigTest {
     private static final int MAX_ALL_DOCS = 5;
     private static final int MAX_WEB_DOCS = 2;
 
-    @Inject
+    @Autowired
     private SearchEngine engineProxy;
 
-    @Inject
+    @Autowired
     private JMSProducer jmsProducer;
 
-    @Inject
+    @Autowired
     private Type webType;
 
     @Test
