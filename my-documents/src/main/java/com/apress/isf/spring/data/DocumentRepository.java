@@ -33,19 +33,15 @@ public class DocumentRepository implements DocumentDAO {
 
     @Override
     public Document findById(String id) {
-        Document updateDocument = null;
-
         final JdbcTemplate template = new JdbcTemplate(dataSource);
 
         try {
-            updateDocument = template.queryForObject(find,
+            return template.queryForObject(find,
                     new Object[] {id},
                     new DocumentRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
+            return null;
         }
-
-        return updateDocument;
     }
 
     @Override

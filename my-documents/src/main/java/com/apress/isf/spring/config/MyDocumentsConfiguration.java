@@ -4,21 +4,25 @@ import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
 import com.apress.isf.spring.data.DocumentDAO;
 import com.apress.isf.spring.data.DocumentRepository;
+import com.apress.isf.spring.jms.JMSConsumer;
 import com.apress.isf.spring.service.SearchEngineService;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 import javax.jms.ConnectionFactory;
+import javax.jms.MessageListener;
 import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("com.apress.isf.spring")
-public class MyDocumentsContext {
+public class MyDocumentsConfiguration {
 
     @Bean
     public Type webType() {
@@ -83,8 +87,8 @@ public class MyDocumentsContext {
     }
 
     @Bean
-    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
-        final JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+    public JmsTemplate jmsTemplate() {
+        final JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
         jmsTemplate.setDefaultDestinationName("mydocumentsQueue");
         return jmsTemplate;
     }
@@ -94,5 +98,22 @@ public class MyDocumentsContext {
         final ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
         connectionFactory.setBrokerURL("tcp://localhost:61616");
         return connectionFactory;
+    }
+
+    @Bean
+    public DefaultMessageListenerContainer jmsListenerContainer(MessageListener messageListener) {
+        final DefaultMessageListenerContainer messageListenerContainer =
+                new DefaultMessageListenerContainer();
+
+        messageListenerContainer.setConnectionFactory(connectionFactory());
+        messageListenerContainer.setDestination(new ActiveMQQueue("mydocumentsQueue"));
+        messageListenerContainer.setMessageListener(messageListener);
+
+        return messageListenerContainer;
+    }
+
+    @Bean
+    public MessageListener messageListener() {
+        return new JMSConsumer();
     }
 }

@@ -3,18 +3,21 @@ package com.apress.isf.java.test;
 import com.apress.isf.java.model.Document;
 import com.apress.isf.java.model.Type;
 import com.apress.isf.java.service.SearchEngine;
+import com.apress.isf.spring.config.MyDocumentsConfiguration;
 import com.apress.isf.spring.jms.JMSProducer;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public abstract class MyDocumentsTestBase {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = MyDocumentsConfiguration.class)
+public class MyDocumentsJavaConfigTest {
 
     //Based on the META-INF/data/jms.txt - only one record
     private static final int MAX_ALL_DOCS = 5;
@@ -55,16 +58,14 @@ public abstract class MyDocumentsTestBase {
     }
 
     @Test
-    public void testSpringJMS_1(){
-        jmsProducer.send();
-    }
+    public void testSpringJMS() throws InterruptedException {
 
-    @Test
-    public void testSpringJMS_2() throws InterruptedException {
+        jmsProducer.send();
+
         assertThat(engineProxy).isNotNull();
 
-        //Waiting a least 5 seconds so the message is consumed.
-        Thread.sleep(5000);
+        //Waiting a least 3 seconds so the message is consumed.
+        Thread.sleep(3000);
         //After the JMS message and insert, must be 5 Documents
         assertThat(MAX_ALL_DOCS).isEqualTo(engineProxy.listAll().size());
 
